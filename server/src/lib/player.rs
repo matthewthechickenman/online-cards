@@ -28,4 +28,8 @@ impl SeatedPlayer {
     pub fn id(&self) -> String {
         self.player.clone()
     }
+
+    pub fn set_hand(&mut self, hand: Deck) {
+        self.cards = hand;
+    }
 }

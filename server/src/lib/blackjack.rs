@@ -2,20 +2,24 @@ use crate::lib::{table::Table, card_deck::Deck};
 
 use super::{table::ITable, player::Player};
 
-pub struct BlackjackDealer {
-    hand: Deck
-}
-
 pub struct BlackjackTable {
     table: Table,
-    dealer: BlackjackDealer
+    dealer_hand: Deck,
 }
 
 impl BlackjackTable {
     fn new(max_players: u8, host: Player, starting_chips: u32) -> Self {
+        let deck = Deck::new(2).shuffle();
         BlackjackTable {
-            table: Table::new(max_players, host, starting_chips),
-            dealer: BlackjackDealer { hand: Deck::BLANK }
+            table: Table::new(max_players, host, starting_chips, deck),
+            dealer_hand: Deck::BLANK
+        }
+    }
+
+    fn deal_hand(&mut self) {
+        self.dealer_hand = self.table.deck.take_from_top(2);
+        for player in &mut self.table.players {
+            player.set_hand(self.table.deck.take_from_top(2))
         }
     }
 }

@@ -2,7 +2,7 @@ use super::{
     player::{Player, SeatedPlayer}, 
     generate_new_id, 
     blackjack::BlackjackTable, 
-    mafia::MafiaGame
+    mafia::MafiaGame, card_deck::Deck
 };
 
 pub enum Games {
@@ -16,23 +16,25 @@ pub trait ITable {
 
 
 pub struct Table {
-    players: Vec<SeatedPlayer>,
-    spectators: Vec<Player>,
+    pub players: Vec<SeatedPlayer>,
+    pub spectators: Vec<Player>,
     pub max_players: u8,
     host: Player,
-    id: String,
+    pub id: String,
     starting_chips: u32,
+    pub deck: Deck,
 }
 
 impl Table {
-    pub fn new(max_players: u8, host: Player, starting_chips: u32) -> Self {
+    pub fn new(max_players: u8, host: Player, starting_chips: u32, deck: Deck) -> Self {
         Table {
             max_players,
             players: Vec::new(),
             spectators: Vec::new(),
             host,
             id: generate_new_id(),
-            starting_chips
+            starting_chips,
+            deck
         }
     }
 

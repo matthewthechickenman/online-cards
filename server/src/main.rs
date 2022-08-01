@@ -15,8 +15,7 @@ lazy_static!{
 }
 
 fn main() {
-    let mut deck = card_deck::Deck::new(1);
-    deck = deck.shuffle();
+    let deck = card_deck::Deck::new(1);
     println!("List of shuffled cards: {}", &deck.clone().print());
     println!("Amount of cards: {}", &deck.length());
 }
