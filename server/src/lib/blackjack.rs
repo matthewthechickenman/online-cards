@@ -11,14 +11,16 @@ pub struct BlackjackTable {
     dealer: BlackjackDealer
 }
 
-impl ITable for BlackjackTable {
-    fn new(max_players: u8, host: Player, default_chips: u32) -> Self {
+impl BlackjackTable {
+    fn new(max_players: u8, host: Player, starting_chips: u32) -> Self {
         BlackjackTable {
-            table: Table::new(max_players, host, default_chips),
+            table: Table::new(max_players, host, starting_chips),
             dealer: BlackjackDealer { hand: Deck::BLANK }
         }
     }
+}
 
+impl ITable for BlackjackTable {
     fn add_spectator(&mut self, player: Player) -> &Self {
         self.table.spectate(player);
         self
@@ -27,7 +29,7 @@ impl ITable for BlackjackTable {
     fn seat_player(&mut self, player: Player) -> &Self {
         match self.table.seat(player) {
             Ok(_) => {},
-            Err(err) => {
+            Err(_) => {
                 // send player err (when WS implemented)
             } 
         };

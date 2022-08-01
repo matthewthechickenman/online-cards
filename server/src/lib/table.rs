@@ -10,8 +10,6 @@ pub enum Games {
     Mafia(MafiaGame)
 }
 pub trait ITable {
-    fn new(max_players: u8, host: Player, default_chips: u32) -> Self;
-
     fn add_spectator(&mut self, player: Player) -> &Self;
     fn seat_player(&mut self, player: Player) -> &Self;
 }
@@ -20,7 +18,7 @@ pub trait ITable {
 pub struct Table {
     players: Vec<SeatedPlayer>,
     spectators: Vec<Player>,
-    max_players: u8,
+    pub max_players: u8,
     host: Player,
     id: String,
     starting_chips: u32,
@@ -59,6 +57,14 @@ impl Table {
         }
 
         
+    }
+
+    pub fn kick(&mut self, to_kick: Player, request_by: Player) -> &Self {
+        if request_by != self.host {
+            self.players.retain(|x| x.id() != to_kick.id);
+
+        }
+        self
     }
 }
 

@@ -24,4 +24,8 @@ impl SeatedPlayer {
             table
         }
     }
+
+    pub fn id(&self) -> String {
+        self.player.clone()
+    }
 }
