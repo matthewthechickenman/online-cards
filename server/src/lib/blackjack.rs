@@ -16,11 +16,20 @@ impl BlackjackTable {
         }
     }
 
-    fn deal_hand(&mut self) {
+    pub fn deal_hand(&mut self) {
         self.dealer_hand = self.table.deck.take_from_top(2);
         for player in &mut self.table.players {
             player.set_hand(self.table.deck.take_from_top(2))
         }
+    }
+
+    pub fn play_game(&mut self) -> &Self {
+        // Get all user input and act upon it.
+        let dealer_val = calculate_blackjack_value(&(&self).dealer_hand);
+        if dealer_val < 17 {
+            // Deal new card to dealer
+        }
+        return self;
     }
 }
 
@@ -39,4 +48,29 @@ impl ITable for BlackjackTable {
         };
         self
     }
+}
+
+fn calculate_blackjack_value(deck: &Deck) -> u16 {
+    let mut val: u16 = 0;
+    let mut aces: u8 = 0;
+    for card in deck.inner() {
+        match card.get_value() {
+            10 | 11 | 12 | 13 => { val += 10 as u16; },
+            1 => {
+                aces += 1;
+                if val > 11 {
+                    val += 1;
+                } else {
+                    val += 11
+                }
+            }
+            _ => { val += card.get_value() as u16 }
+        }
+    }
+    while val > 21 && aces > 1 {
+        aces = aces - 1;
+        val = val - 10;
+    };
+
+    return val;
 }

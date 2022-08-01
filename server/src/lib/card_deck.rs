@@ -17,6 +17,10 @@ impl Deck {
         Deck(cards)
     }
 
+    pub fn inner(&self) -> &Vec<Card> {
+        &self.0
+    }
+
     pub const BLANK: Deck = Deck(vec![]);
 
     pub fn take_from_top(&mut self, card_amount: u8) -> Deck {
@@ -92,11 +96,16 @@ impl Card {
             suit: Suit::Diamond,
         }
     }
+
     pub const fn get_black() -> Self {
         Card {
             value: 1,
             suit: Suit::Clubs,
         }
+    }
+
+    pub fn get_value(&self) -> u8 {
+        self.value
     }
 }
 
